@@ -49,8 +49,7 @@ def get_answer_2_fast(data):
     x = 50
     res = 0
     for direction, value in data:
-        div = value // 100
-        mod = value % 100
+        div, mod = divmod(value, 100)
         res += div
         sign = -1 if direction == "L" else 1
         new_x = x + sign * mod
