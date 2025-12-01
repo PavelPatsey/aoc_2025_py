@@ -23,10 +23,8 @@ def get_answer(data):
     x = 50
     res = 0
     for command in data:
-        if command[0] == "L":
-            x = (x - command[1]) % 100
-        else:
-            x = (x + command[1]) % 100
+        sign = -1 if command[0] == "L" else 1
+        x = (x + sign * command[1]) % 100
         if x == 0:
             res += 1
     return res
@@ -37,10 +35,7 @@ def get_answer_2_naive(data):
     x = 50
     res = 0
     for command in data:
-        if command[0] == "L":
-            sign = -1
-        else:
-            sign = 1
+        sign = -1 if command[0] == "L" else 1
         for i in range(command[1]):
             x = x + sign
             x = x % 100
