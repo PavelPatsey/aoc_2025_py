@@ -20,25 +20,25 @@ def get_answer(data):
 def get_answer_2(data):
     x = 50
     res = 0
-    div = 0
+
     for command in data:
         if command[0] == "L":
-            x = x - command[1]
+            sign = -1
         else:
-            x = x + command[1]
-        new_div = x // 100
-        res += abs(new_div - div)
-        x = x % 100
-        div = x // 100
-        # print(x, div)
+            sign = 1
+        for i in range(command[1]):
+            x = x + sign
+            x = x % 100
+            if x == 0:
+                res += 1
     return res
 
 
 def main():
-    file = "test_input.txt"
+    file = "input.txt"
     data = get_data(file)
     print(data)
-    # print(get_answer(data))
+    print(get_answer(data))
     print(get_answer_2(data))
 
 
