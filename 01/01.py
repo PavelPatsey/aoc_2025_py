@@ -1,15 +1,24 @@
 def get_data(input_file):
     with open(input_file, "r") as file:
         data = file.read().splitlines()
-    return data
+    return [(line[0], int(line[1:])) for line in data]
 
 
 def get_answer(data):
-    return
+    x = 50
+    res = 0
+    for command in data:
+        if command[0] == "L":
+            x = (x - command[1]) % 100
+        else:
+            x = (x + command[1]) % 100
+        if x == 0:
+            res += 1
+    return res
 
 
 def main():
-    file = "test_input.txt"
+    file = "input.txt"
     data = get_data(file)
     print(data)
     print(get_answer(data))
