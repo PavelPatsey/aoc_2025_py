@@ -1,3 +1,6 @@
+from utils import timer
+
+
 def get_data(input_file):
     with open(input_file, "r") as file:
         data = file.read().strip()
@@ -14,6 +17,7 @@ def is_invalid(n: int) -> bool:
     return s[0 : n // 2] == s[n // 2 :]
 
 
+@timer
 def get_answer(data):
     res = 0
     for start, end in data:
@@ -37,6 +41,7 @@ def is_invalid_2(n: int) -> bool:
     return False
 
 
+@timer
 def get_answer_2(data):
     res = 0
     for start, end in data:
