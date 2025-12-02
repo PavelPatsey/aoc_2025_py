@@ -11,10 +11,10 @@ def is_invalid(n: int) -> bool:
     s = str(n)
     if s.startswith("0"):
         return False
-    n = len(s)
-    if n % 2 != 0:
+    length = len(s)
+    if length % 2 != 0:
         return False
-    return s[0 : n // 2] == s[n // 2 :]
+    return s[0 : length // 2] == s[length // 2 :]
 
 
 @timer
@@ -31,11 +31,11 @@ def is_invalid_2(n: int) -> bool:
     s = str(n)
     if s.startswith("0"):
         return False
-    n = len(s)
-    for i in range(2, len(s) + 1):
-        if n % i != 0:
+    length = len(s)
+    for i in range(2, length + 1):
+        if length % i != 0:
             continue
-        a = s[0 : n // i]
+        a = s[0 : length // i]
         if a * i == s:
             return True
     return False
