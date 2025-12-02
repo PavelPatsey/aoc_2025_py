@@ -61,12 +61,41 @@ def get_answer_2_func(data):
     return sum(filtered)
 
 
+def generate_invalid_nums(max_num: int) -> set[int]:
+    invalid_nums = set()
+    for i in range(2, len(str(max_num)) + 1):
+        j = 1
+        n = int(str(j) * i)
+        while n <= max_num:
+            invalid_nums.add(n)
+            j += 1
+            n = int(str(j) * i)
+    return invalid_nums
+
+
+@timer
+def get_answer_2_fast(data):
+    ranges = sorted(data)
+    max_end = ranges[-1][-1]
+    invalid_nums = generate_invalid_nums(max_end)
+    nums = sorted(invalid_nums)
+
+    total = 0
+    for n in nums:
+        for left, right in ranges:
+            if left <= n <= right:
+                total += n
+                break
+    return total
+
+
 def main():
     file = "input.txt"
     data = get_data(file)
     print(get_answer(data))
     print(get_answer_2(data))
     print(get_answer_2_func(data))
+    print(get_answer_2_fast(data))
 
 
 def test():
