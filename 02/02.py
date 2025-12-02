@@ -76,8 +76,8 @@ def generate_invalid_nums(max_num: int) -> set[int]:
 @timer
 def get_answer_2_fast(data):
     ranges = sorted(data)
-    max_end = ranges[-1][-1]
-    invalid_nums = generate_invalid_nums(max_end)
+    max_num = ranges[-1][-1]
+    invalid_nums = generate_invalid_nums(max_num)
     nums = sorted(invalid_nums)
 
     total = 0
