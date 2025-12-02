@@ -1,3 +1,5 @@
+from itertools import chain
+
 from utils import timer
 
 
@@ -51,11 +53,20 @@ def get_answer_2(data):
     return res
 
 
+@timer
+def get_answer_2_func(data):
+    mapped = map(lambda x: range(x[0], x[1] + 1), data)
+    chained = chain.from_iterable(mapped)
+    filtered = filter(is_invalid_2, chained)
+    return sum(filtered)
+
+
 def main():
     file = "input.txt"
     data = get_data(file)
     print(get_answer(data))
     print(get_answer_2(data))
+    print(get_answer_2_func(data))
 
 
 def test():
