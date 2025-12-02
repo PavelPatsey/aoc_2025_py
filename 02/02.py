@@ -11,9 +11,7 @@ def is_invalid(n: int) -> bool:
     n = len(s)
     if n % 2 != 0:
         return False
-    a = s[0 : n // 2]
-    b = s[n // 2 :]
-    return a == b
+    return s[0 : n // 2] == s[n // 2 :]
 
 
 def get_answer(data):
@@ -55,9 +53,7 @@ def main():
     print(get_answer_2(data))
 
 
-if __name__ == "__main__":
-    main()
-
+def test():
     assert is_invalid(11) == True
     assert is_invalid(22) == True
     assert is_invalid(1188511885) == True
@@ -76,3 +72,8 @@ if __name__ == "__main__":
     assert is_invalid_2(1188511885) == True
 
     assert is_invalid_2(1726462) == False
+
+
+if __name__ == "__main__":
+    test()
+    main()
