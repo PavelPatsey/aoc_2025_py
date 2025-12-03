@@ -10,13 +10,13 @@ def find_max_joltage(n: int, length: int) -> int:
     left = 0
     right = len(digits) - length
     while right < len(digits):
-        max_tuple = left, digits[left]
+        max_i, max_digit = left, digits[left]
         for i in range(left + 1, right + 1):
-            if digits[i] > digits[max_tuple[0]]:
-                max_tuple = i, digits[i]
-        res = res * 10 + max_tuple[1]
+            if digits[i] > max_digit:
+                max_i, max_digit = i, digits[i]
+        res = res * 10 + max_digit
         right += 1
-        left = max_tuple[0] + 1
+        left = max_i + 1
     return res
 
 
