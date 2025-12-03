@@ -22,7 +22,7 @@ def get_answer(data):
 
 
 def get_max_joltage_2(n: int) -> int:
-    res = []
+    res = 0
     digits = [int(char) for char in str(n)]
     left = 0
     right = len(digits) - 12
@@ -31,11 +31,10 @@ def get_max_joltage_2(n: int) -> int:
         for i in range(left + 1, right + 1):
             if digits[i] > digits[max_tuple[0]]:
                 max_tuple = i, digits[i]
-        left = max_tuple[0]
-        res.append(max_tuple[1])
+        res = res * 10 + max_tuple[1]
         right += 1
-        left += 1
-    return int("".join(str(x) for x in res))
+        left = max_tuple[0] + 1
+    return res
 
 
 def get_answer_2(data):
