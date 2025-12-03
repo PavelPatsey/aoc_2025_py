@@ -4,7 +4,7 @@ def get_data(input_file):
     return [int(line) for line in data]
 
 
-def get_max_joltage(n: int) -> int:
+def find_max_joltage(n: int) -> int:
     digits = [int(char) for char in str(n)]
     res = 0
     for i in range(len(digits)):
@@ -17,11 +17,11 @@ def get_max_joltage(n: int) -> int:
 def get_answer(data):
     res = 0
     for n in data:
-        res += get_max_joltage(n)
+        res += find_max_joltage(n)
     return res
 
 
-def get_max_joltage_2(n: int) -> int:
+def find_max_joltage_2(n: int) -> int:
     res = 0
     digits = [int(char) for char in str(n)]
     left = 0
@@ -40,7 +40,7 @@ def get_max_joltage_2(n: int) -> int:
 def get_answer_2(data):
     res = 0
     for n in data:
-        a = get_max_joltage_2(n)
+        a = find_max_joltage_2(n)
         res += a
     return res
 
@@ -53,10 +53,10 @@ def main():
 
 
 def test():
-    assert get_max_joltage_2(987654321111111) == 987654321111
-    assert get_max_joltage_2(811111111111119) == 811111111119
-    assert get_max_joltage_2(234234234234278) == 434234234278
-    assert get_max_joltage_2(818181911112111) == 888911112111
+    assert find_max_joltage_2(987654321111111) == 987654321111
+    assert find_max_joltage_2(811111111111119) == 811111111119
+    assert find_max_joltage_2(234234234234278) == 434234234278
+    assert find_max_joltage_2(818181911112111) == 888911112111
 
 
 if __name__ == "__main__":
