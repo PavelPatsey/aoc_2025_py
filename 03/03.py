@@ -4,28 +4,11 @@ def get_data(input_file):
     return [int(line) for line in data]
 
 
-def find_max_joltage(n: int) -> int:
-    digits = [int(char) for char in str(n)]
-    res = 0
-    for i in range(len(digits)):
-        for j in range(i + 1, len(digits)):
-            a = int(digits[i] * 10 + digits[j])
-            res = max(res, a)
-    return res
-
-
-def get_answer(data):
-    res = 0
-    for n in data:
-        res += find_max_joltage(n)
-    return res
-
-
-def find_max_joltage_2(n: int) -> int:
+def find_max_joltage(n: int, length: int) -> int:
     res = 0
     digits = [int(char) for char in str(n)]
     left = 0
-    right = len(digits) - 12
+    right = len(digits) - length
     while right < len(digits):
         max_tuple = left, digits[left]
         for i in range(left + 1, right + 1):
@@ -37,26 +20,26 @@ def find_max_joltage_2(n: int) -> int:
     return res
 
 
-def get_answer_2(data):
-    res = 0
-    for n in data:
-        a = find_max_joltage_2(n)
-        res += a
-    return res
-
-
 def main():
     file = "input.txt"
     data = get_data(file)
-    print(get_answer(data))
-    print(get_answer_2(data))
+    ans1, ans2 = 0, 0
+    for n in data:
+        ans1 += find_max_joltage(n, 2)
+        ans2 += find_max_joltage(n, 12)
+    print(ans1, ans2, sep="\n")
 
 
 def test():
-    assert find_max_joltage_2(987654321111111) == 987654321111
-    assert find_max_joltage_2(811111111111119) == 811111111119
-    assert find_max_joltage_2(234234234234278) == 434234234278
-    assert find_max_joltage_2(818181911112111) == 888911112111
+    assert find_max_joltage(987654321111111, 2) == 98
+    assert find_max_joltage(811111111111119, 2) == 89
+    assert find_max_joltage(234234234234278, 2) == 78
+    assert find_max_joltage(818181911112111, 2) == 92
+
+    assert find_max_joltage(987654321111111, 12) == 987654321111
+    assert find_max_joltage(811111111111119, 12) == 811111111119
+    assert find_max_joltage(234234234234278, 12) == 434234234278
+    assert find_max_joltage(818181911112111, 12) == 888911112111
 
 
 if __name__ == "__main__":
