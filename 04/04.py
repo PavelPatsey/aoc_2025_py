@@ -1,3 +1,5 @@
+from itertools import product
+
 DIRS8 = (
     (-1, -1),
     (-1, 0),
@@ -12,8 +14,7 @@ DIRS8 = (
 
 def get_data(input_file):
     with open(input_file, "r") as file:
-        data = file.read().splitlines()
-    return [list(line) for line in data]
+        return [list(line) for line in file.read().splitlines()]
 
 
 def in_grid(r, c, grid):
@@ -36,32 +37,29 @@ def get_answer(grid):
     res = 0
     rows = len(grid)
     cols = len(grid[0])
-    for r in range(rows):
-        for c in range(cols):
-            if is_valid(r, c, grid):
-                res += 1
+    for r, c in product(range(rows), range(cols)):
+        if is_valid(r, c, grid):
+            res += 1
     return res
 
 
-def get_coordinates(grid):
-    res = []
+def find_rolls(grid):
+    points = []
     rows = len(grid)
     cols = len(grid[0])
-    for r in range(rows):
-        for c in range(cols):
-            if is_valid(r, c, grid):
-                p = r, c
-                res.append(p)
-    return res
+    for r, c in product(range(rows), range(cols)):
+        if is_valid(r, c, grid):
+            points.append((r, c))
+    return points
 
 
 def get_answer_2(grid):
-    points = get_coordinates(grid)
+    points = find_rolls(grid)
     res = len(points)
     while len(points) > 0:
         for r, c in points:
             grid[r][c] = "."
-        points = get_coordinates(grid)
+        points = find_rolls(grid)
         res += len(points)
     return res
 
