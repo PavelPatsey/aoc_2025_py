@@ -43,7 +43,7 @@ def get_answer(grid):
     return res
 
 
-def find_rolls(grid):
+def find_valid_points(grid):
     points = []
     rows = len(grid)
     cols = len(grid[0])
@@ -54,13 +54,13 @@ def find_rolls(grid):
 
 
 def get_answer_2(grid):
-    points = find_rolls(grid)
+    points = find_valid_points(grid)
     res = 0
     while len(points) > 0:
         res += len(points)
         for r, c in points:
             grid[r][c] = "."
-        points = find_rolls(grid)
+        points = find_valid_points(grid)
     return res
 
 
