@@ -50,11 +50,7 @@ def get_answer_2(ranges):
     for a, b in sorted_ranges:
         merged.append((a, b))
         merged = merge(merged)
-
-    res = 0
-    for a, b in merged:
-        res += b - a + 1
-    return res
+    return sum(map(lambda x: x[1] - x[0] + 1, merged))
 
 
 def main():
