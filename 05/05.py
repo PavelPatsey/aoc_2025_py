@@ -48,12 +48,10 @@ def normalize(merged: list) -> list:
 
 def get_answer_2(ranges):
     ranges = sorted(ranges, key=itemgetter(1))
-    print(ranges)
     merged = []
     for a, b in ranges:
         merged.append((a, b))
         merged = normalize(merged)
-    print(merged)
 
     res = 0
     for a, b in merged:
