@@ -1,7 +1,17 @@
 def get_data(input_file):
     with open(input_file, "r") as file:
         data = file.read().splitlines()
-    return data
+    ranges = []
+    nums = []
+    for line in data:
+        if "-" in line:
+            a, b = map(int, line.split("-"))
+            ranges.append((a, b))
+        elif line:
+            nums.append(int(line))
+        else:
+            pass
+    return ranges, nums
 
 
 def get_answer(data):
@@ -10,9 +20,10 @@ def get_answer(data):
 
 def main():
     file = "test_input.txt"
-    data = get_data(file)
-    print(data)
-    print(get_answer(data))
+    ranges, nums = get_data(file)
+    print(ranges)
+    print(nums)
+    # print(get_answer(data))
 
 
 if __name__ == "__main__":
