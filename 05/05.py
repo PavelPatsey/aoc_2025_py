@@ -14,16 +14,22 @@ def get_data(input_file):
     return ranges, nums
 
 
-def get_answer(data):
-    return
+def get_answer(ranges, nums):
+    sorted_ranges = sorted(ranges)
+    sorted_nums = sorted(nums)
+    counter = 0
+    for n in sorted_nums:
+        for a, b in sorted_ranges:
+            if a <= n <= b:
+                counter += 1
+                break
+    return counter
 
 
 def main():
-    file = "test_input.txt"
+    file = "input.txt"
     ranges, nums = get_data(file)
-    print(ranges)
-    print(nums)
-    # print(get_answer(data))
+    print(get_answer(ranges, nums))
 
 
 if __name__ == "__main__":
