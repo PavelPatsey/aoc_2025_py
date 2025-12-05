@@ -34,15 +34,14 @@ def merge(ranges: list) -> list:
         return ranges
     is_merged = False
     while len(ranges) >= 2 and not is_merged:
-        a1, b1 = ranges.pop()
-        a2, b2 = ranges.pop()
+        a1, b1 = ranges[-1]
+        a2, b2 = ranges[-2]
         if a1 <= b2:
+            ranges.pop()
             min_a = min(a1, a2)
             max_b = max(b1, b2)
-            ranges.append((min_a, max_b))
+            ranges[-1] = min_a, max_b
         else:
-            ranges.append((a2, b2))
-            ranges.append((a1, b1))
             is_merged = True
     return ranges
 
