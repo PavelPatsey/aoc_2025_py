@@ -33,22 +33,21 @@ def merge(ranges: list) -> list:
     if len(ranges) < 2:
         return ranges
     is_merged = False
-    while len(ranges) >= 2 and not is_merged:
+    while not is_merged and len(ranges) >= 2:
         a1, b1 = ranges[-1]
         a2, b2 = ranges[-2]
         if a1 <= b2:
             ranges.pop()
-            min_a = min(a1, a2)
-            ranges[-1] = min_a, b1
+            ranges[-1] = min(a1, a2), b1
         else:
             is_merged = True
     return ranges
 
 
 def get_answer_2(ranges):
-    ranges = sorted(ranges, key=itemgetter(1))
+    sorted_ranges = sorted(ranges, key=itemgetter(1))
     merged = []
-    for a, b in ranges:
+    for a, b in sorted_ranges:
         merged.append((a, b))
         merged = merge(merged)
 
