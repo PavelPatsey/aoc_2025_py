@@ -29,21 +29,22 @@ def get_answer(ranges, nums):
     return counter
 
 
-def normalize(merged: list) -> list:
-    if len(merged) < 2:
-        return merged
-    while len(merged) >= 2:
-        a1, b1 = merged.pop()
-        a2, b2 = merged.pop()
+def merge(ranges: list) -> list:
+    if len(ranges) < 2:
+        return ranges
+    is_merged = False
+    while len(ranges) >= 2 and not is_merged:
+        a1, b1 = ranges.pop()
+        a2, b2 = ranges.pop()
         if a1 <= b2:
             min_a = min(a1, a2)
             max_b = max(b1, b2)
-            merged.append((min_a, max_b))
+            ranges.append((min_a, max_b))
         else:
-            merged.append((a2, b2))
-            merged.append((a1, b1))
-            break
-    return merged
+            ranges.append((a2, b2))
+            ranges.append((a1, b1))
+            is_merged = True
+    return ranges
 
 
 def get_answer_2(ranges):
@@ -51,7 +52,7 @@ def get_answer_2(ranges):
     merged = []
     for a, b in ranges:
         merged.append((a, b))
-        merged = normalize(merged)
+        merged = merge(merged)
 
     res = 0
     for a, b in merged:
