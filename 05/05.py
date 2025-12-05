@@ -3,17 +3,10 @@ from operator import itemgetter
 
 def get_data(input_file):
     with open(input_file, "r") as file:
-        data = file.read().splitlines()
-    ranges = []
-    nums = []
-    for line in data:
-        if "-" in line:
-            a, b = map(int, line.split("-"))
-            ranges.append((a, b))
-        elif line:
-            nums.append(int(line))
-        else:
-            pass
+        data = file.read().strip()
+    data_1, data_2 = data.split("\n\n")
+    ranges = [tuple(map(int, line.split("-"))) for line in data_1.splitlines()]
+    nums = [int(line) for line in data_2.splitlines()]
     return ranges, nums
 
 
