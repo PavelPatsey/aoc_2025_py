@@ -39,8 +39,7 @@ def merge(ranges: list) -> list:
         if a1 <= b2:
             ranges.pop()
             min_a = min(a1, a2)
-            max_b = max(b1, b2)
-            ranges[-1] = min_a, max_b
+            ranges[-1] = min_a, b1
         else:
             is_merged = True
     return ranges
