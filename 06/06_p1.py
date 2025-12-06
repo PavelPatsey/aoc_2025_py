@@ -1,5 +1,5 @@
-from math import prod
 from functools import reduce
+from math import prod
 
 
 def get_data(input_file):
