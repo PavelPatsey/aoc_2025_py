@@ -1,4 +1,4 @@
-from functools import reduce
+from math import prod
 
 
 def get_data(input_file):
@@ -22,7 +22,7 @@ def prepare_grid(data):
 def calculate(nums: list, op: str) -> int:
     if op == "+":
         return sum(nums)
-    return reduce(lambda acc, x: acc * x, nums, 1)
+    return prod(nums)
 
 
 def get_answer(grid):
