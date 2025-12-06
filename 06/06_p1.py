@@ -30,13 +30,13 @@ def get_answer(grid):
         print(row)
         if row[-1] == "+":
             # a = sum(row[: rows - 1])
-            numbers = [x for x in row if isinstance(x, (int, float))]
+            numbers = [x for x in row if isinstance(x, int)]
             a = sum(numbers)
             res += a
         else:
 
             # b = reduce(lambda acc, x: acc * x, row[: rows - 1], 1)
-            numbers = [x for x in row if isinstance(x, (int, float))]
+            numbers = [x for x in row if isinstance(x, int)]
             b = reduce(lambda acc, x: acc * x, numbers, 1)
             res += b
     return res
