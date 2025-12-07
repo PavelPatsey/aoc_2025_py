@@ -1,5 +1,5 @@
+from copy import deepcopy
 from itertools import product
-from functools import lru_cache
 
 DIRS = [(0, -1), (0, 1)]
 
@@ -40,34 +40,27 @@ def get_answer(grid):
 
 def get_answer_2(grid):
     rows = len(grid)
+    cols = len(grid[0])
     sr, sc = 0, grid[0].index("S")
-    res = 0
+    weights = [[0 for _ in range(cols)] for _ in range(rows)]
+    weights[sr][sc] = 1
+    weights[sr + 1][sc] = 1
 
-    # @lru_cache
-    def dfs(r, c):
-        if r >= rows:
-            nonlocal res
-            res += 1
-            print(r, c)
-            return
-        if grid[r][c] == ".":
-            dfs(r + 1, c)
-            return
+    for r, c in product(range(2, rows), range(cols)):
         if grid[r][c] == "^":
-            for dr, dc in [(1, -1), (1, 1)]:
+            for dr, dc in [(0, -1), (0, 1)]:
                 nr, nc = r + dr, c + dc
                 if in_grid(nr, nc, grid):
-                    dfs(nr, nc)
-        return
-
-    dfs(sr + 1, sc)
-    return res
+                    weights[nr][nc] += weights[r - 1][c]
+        else:
+            weights[r][c] += weights[r - 1][c]
+    return sum(weights[-1])
 
 
 def main():
-    file = "test_input.txt"
+    file = "input.txt"
     grid = get_data(file)
-    # print(get_answer(deepcopy(grid)))
+    print(get_answer(deepcopy(grid)))
     print(get_answer_2(grid))
 
 
