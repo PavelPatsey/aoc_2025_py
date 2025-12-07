@@ -8,12 +8,6 @@ def get_data(input_file):
     return [[x for x in line] for line in data]
 
 
-def in_grid(r, c, grid):
-    rows = len(grid)
-    cols = len(grid[0])
-    return 0 <= r < rows and 0 <= c < cols
-
-
 def get_answer(grid):
     grid = deepcopy(grid)
     rows = len(grid)
@@ -22,10 +16,8 @@ def get_answer(grid):
     res = 0
     for r, c in product(range(2, rows), range(cols)):
         if grid[r][c] == "^" and grid[r - 1][c] == "|":
-            for dr, dc in [(0, -1), (0, 1)]:
-                nr, nc = r + dr, c + dc
-                if in_grid(nr, nc, grid) and grid[nr][nc] != "^":
-                    grid[nr][nc] = "|"
+            grid[r][c - 1] = "|"
+            grid[r][c + 1] = "|"
             res += 1
         if grid[r][c] == "." and grid[r - 1][c] == "|":
             grid[r][c] = "|"
@@ -41,10 +33,8 @@ def get_answer_2(grid):
 
     for r, c in product(range(2, rows), range(cols)):
         if grid[r][c] == "^":
-            for dr, dc in [(0, -1), (0, 1)]:
-                nr, nc = r + dr, c + dc
-                if in_grid(nr, nc, grid):
-                    weights[nr][nc] += weights[r - 1][c]
+            weights[r][c - 1] += weights[r - 1][c]
+            weights[r][c + 1] += weights[r - 1][c]
         else:
             weights[r][c] += weights[r - 1][c]
     return sum(weights[-1])
