@@ -18,7 +18,7 @@ def get_answer(grid):
     grid = deepcopy(grid)
     rows = len(grid)
     cols = len(grid[0])
-    grid[0][grid[0].index("S")] = "|"
+    grid[1][grid[0].index("S")] = "|"
     res = 0
     for r, c in product(range(2, rows), range(cols)):
         if grid[r][c] == "^" and grid[r - 1][c] == "|":
