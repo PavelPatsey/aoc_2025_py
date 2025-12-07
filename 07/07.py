@@ -1,4 +1,5 @@
 from itertools import product
+from functools import lru_cache
 
 DIRS = [(0, -1), (0, 1)]
 
@@ -37,10 +38,37 @@ def get_answer(grid):
     return res
 
 
+def get_answer_2(grid):
+    rows = len(grid)
+    sr, sc = 0, grid[0].index("S")
+    res = 0
+
+    # @lru_cache
+    def dfs(r, c):
+        if r >= rows:
+            nonlocal res
+            res += 1
+            print(r, c)
+            return
+        if grid[r][c] == ".":
+            dfs(r + 1, c)
+            return
+        if grid[r][c] == "^":
+            for dr, dc in [(1, -1), (1, 1)]:
+                nr, nc = r + dr, c + dc
+                if in_grid(nr, nc, grid):
+                    dfs(nr, nc)
+        return
+
+    dfs(sr + 1, sc)
+    return res
+
+
 def main():
-    file = "input.txt"
+    file = "test_input.txt"
     grid = get_data(file)
-    print(get_answer(grid))
+    # print(get_answer(deepcopy(grid)))
+    print(get_answer_2(grid))
 
 
 if __name__ == "__main__":
