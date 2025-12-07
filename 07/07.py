@@ -1,8 +1,6 @@
 from copy import deepcopy
 from itertools import product
 
-DIRS = [(0, -1), (0, 1)]
-
 
 def get_data(input_file):
     with open(input_file, "r") as file:
@@ -17,6 +15,7 @@ def in_grid(r, c, grid):
 
 
 def get_answer(grid):
+    grid = deepcopy(grid)
     rows = len(grid)
     cols = len(grid[0])
     start = 0, grid[0].index("S")
@@ -26,7 +25,7 @@ def get_answer(grid):
     for r, c in product(range(2, rows), range(cols)):
         if grid[r][c] == "^" and grid[r - 1][c] == "|":
             split = False
-            for dr, dc in DIRS:
+            for dr, dc in [(0, -1), (0, 1)]:
                 nr, nc = r + dr, c + dc
                 if in_grid(nr, nc, grid) and grid[nr][nc] != "^":
                     grid[nr][nc] = "|"
@@ -60,7 +59,7 @@ def get_answer_2(grid):
 def main():
     file = "input.txt"
     grid = get_data(file)
-    print(get_answer(deepcopy(grid)))
+    print(get_answer(grid))
     print(get_answer_2(grid))
 
 
