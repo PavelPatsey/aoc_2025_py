@@ -30,7 +30,6 @@ def get_answer_2(grid):
     sr, sc = 0, grid[0].index("S")
     weights = [[0 for _ in range(cols)] for _ in range(rows)]
     weights[sr + 1][sc] = 1
-
     for r, c in product(range(2, rows), range(cols)):
         if grid[r][c] == "^":
             weights[r][c - 1] += weights[r - 1][c]
