@@ -24,14 +24,11 @@ def get_answer(grid):
     res = 0
     for r, c in product(range(2, rows), range(cols)):
         if grid[r][c] == "^" and grid[r - 1][c] == "|":
-            split = False
             for dr, dc in [(0, -1), (0, 1)]:
                 nr, nc = r + dr, c + dc
                 if in_grid(nr, nc, grid) and grid[nr][nc] != "^":
                     grid[nr][nc] = "|"
-                    split = True
-            if split:
-                res += 1
+            res += 1
         if grid[r][c] == "." and grid[r - 1][c] == "|":
             grid[r][c] = "|"
     return res
