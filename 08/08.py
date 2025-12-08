@@ -23,7 +23,7 @@ def make_ds_points_heap(points):
     return heap
 
 
-def union(circuits: list[set], i, j) -> None:
+def update_circuits(circuits: list[set], i, j) -> None:
     circ_with_i = None
     circ_with_j = None
     for circ in circuits:
@@ -51,7 +51,7 @@ def get_answer(n, heap):
     circuits = []
     for _ in range(n):
         _, i, j = heapq.heappop(heap)
-        union(circuits, i, j)
+        update_circuits(circuits, i, j)
     sorted_lens = sorted(map(lambda x: len(x), circuits), reverse=True)
     return prod(sorted_lens[:3])
 
@@ -63,7 +63,7 @@ def get_answer_2(points, heap):
     circuits = []
     while max_len < len(points):
         _, i, j = heapq.heappop(heap)
-        union(circuits, i, j)
+        update_circuits(circuits, i, j)
         max_len = max(map(lambda x: len(x), circuits))
     return points[i][0] * points[j][0]
 
