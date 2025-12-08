@@ -1,5 +1,5 @@
 from collections import defaultdict, deque
-from itertools import product
+from itertools import combinations
 from math import prod, sqrt
 
 from utils import timer
@@ -15,7 +15,7 @@ def get_data(input_file):
 def calculate_distances(points):
     l = len(points)
     distances = [[0 for _ in range(l)] for _ in range(l)]
-    for i, j in product(range(l), range(l)):
+    for i, j in combinations(range(l), 2):
         x1, y1, z1 = points[i]
         x2, y2, z2 = points[j]
         d = sqrt((x2 - x1) ** 2 + (y2 - y1) ** 2 + (z2 - z1) ** 2)
@@ -28,12 +28,17 @@ def calculate_distances(points):
 def get_sorted_ds_points(points, distances):
     l = len(points)
     ds_points = set()
-    for i, j in product(range(l), range(l)):
+    for i, j in combinations(range(l), 2):
         if i != j:
             point = frozenset({i, j})
             d = distances[i][j]
             ds_points.add((d, point))
     return sorted(ds_points)
+
+
+@timer
+def make_ds_points_heap(points):
+    pass
 
 
 def make_graph(n, sorted_ds_points):
@@ -74,37 +79,33 @@ def get_answer(n, sorted_ds_points):
 def get_answer_2(points, sorted_ds_points):
     max_len = -1
     n = 0
-    groups = []
+    circuits = []
     while max_len < len(points):
         _d, indxs = sorted_ds_points[n]
         i, j = indxs
 
-        found_i = set()
-        found_j = set()
-        for gr in groups:
-            if i in gr:
-                found_i = gr
-            if j in gr:
-                found_j = gr
-        if not found_i and not found_j:
-            groups.append({i, j})
-        elif found_i and found_j:
-            if found_i == found_j:
-                groups.remove(found_i)
-            else:
-                groups.remove(found_i)
-                groups.remove(found_j)
-            groups.append(found_i | found_j)
-        elif found_i:
-            groups.remove(found_i)
-            groups.append(found_i | {j})
-        elif found_j:
-            groups.remove(found_j)
-            groups.append(found_j | {i})
+        circ_with_i = None
+        circ_with_j = None
+        for circ in circuits:
+            if i in circ:
+                circ_with_i = circ
+            if j in circ:
+                circ_with_j = circ
+        if circ_with_i is None and circ_with_j is None:
+            circuits.append({i, j})
+        elif circ_with_i and circ_with_j:
+            if circ_with_i != circ_with_j:
+                circuits.remove(circ_with_j)
+                circ_with_i.update(circ_with_j)
+        elif circ_with_i:
+            circuits.remove(circ_with_i)
+            circuits.append(circ_with_i | {j})
+        elif circ_with_j:
+            circuits.remove(circ_with_j)
+            circuits.append(circ_with_j | {i})
         else:
             assert False, "error case!"
-        lens = list(map(lambda x: len(x), groups))
-        max_len = max(lens)
+        max_len = max(map(lambda x: len(x), circuits))
         n += 1
     return points[i][0] * points[j][0]
 
