@@ -1,5 +1,4 @@
 import heapq
-from collections import defaultdict, deque
 from copy import copy
 from itertools import combinations
 from math import prod
@@ -24,43 +23,41 @@ def make_ds_points_heap(points):
             x1, y1, z1 = points[i]
             x2, y2, z2 = points[j]
             d = (x2 - x1) ** 2 + (y2 - y1) ** 2 + (z2 - z1) ** 2
-            heapq.heappush(heap, (d, point))
+            heapq.heappush(heap, (d, i, j))
             visited.add(point)
     return heap
 
 
-def make_graph(n, ds_points_heap):
-    graph = defaultdict(set)
-    for k in range(n):
-        _d, indxs = heapq.heappop(ds_points_heap)
-        i, j = indxs
-        graph[i].add(j)
-        graph[j].add(i)
-    return graph
-
-
-def make_groups(graph):
-    groups = set()
-    for i in graph:
-        visited = {i}
-        queue = deque([i])
-        while queue:
-            j = queue.popleft()
-            neighbors = graph[j]
-            for n in neighbors:
-                if n not in visited:
-                    visited.add(n)
-                    queue.append(n)
-        groups.add(frozenset(visited))
-    return groups
+def union(circuits: list[set], i, j) -> None:
+    circ_with_i = None
+    circ_with_j = None
+    for circ in circuits:
+        if i in circ:
+            circ_with_i = circ
+        if j in circ:
+            circ_with_j = circ
+    if circ_with_i is None and circ_with_j is None:
+        circuits.append({i, j})
+    elif circ_with_i and circ_with_j:
+        if circ_with_i != circ_with_j:
+            circuits.remove(circ_with_j)
+            circ_with_i.update(circ_with_j)
+    elif circ_with_i:
+        circ_with_i.add(j)
+    elif circ_with_j:
+        circ_with_j.add(i)
+    else:
+        assert False, "error case!"
 
 
 @timer
 def get_answer(n, heap):
     heap = copy(heap)
-    graph = make_graph(n, heap)
-    groups = make_groups(graph)
-    lens = sorted(map(lambda x: len(x), groups), reverse=True)
+    circuits = []
+    for _ in range(n):
+        _, i, j = heapq.heappop(heap)
+        union(circuits, i, j)
+    lens = sorted(map(lambda x: len(x), circuits), reverse=True)
     return prod(lens[:3])
 
 
@@ -68,35 +65,11 @@ def get_answer(n, heap):
 def get_answer_2(points, heap):
     heap = copy(heap)
     max_len = -1
-    n = 0
     circuits = []
     while max_len < len(points):
-        _d, indxs = heapq.heappop(heap)
-        i, j = indxs
-
-        circ_with_i = None
-        circ_with_j = None
-        for circ in circuits:
-            if i in circ:
-                circ_with_i = circ
-            if j in circ:
-                circ_with_j = circ
-        if circ_with_i is None and circ_with_j is None:
-            circuits.append({i, j})
-        elif circ_with_i and circ_with_j:
-            if circ_with_i != circ_with_j:
-                circuits.remove(circ_with_j)
-                circ_with_i.update(circ_with_j)
-        elif circ_with_i:
-            circuits.remove(circ_with_i)
-            circuits.append(circ_with_i | {j})
-        elif circ_with_j:
-            circuits.remove(circ_with_j)
-            circuits.append(circ_with_j | {i})
-        else:
-            assert False, "error case!"
+        _, i, j = heapq.heappop(heap)
+        union(circuits, i, j)
         max_len = max(map(lambda x: len(x), circuits))
-        n += 1
     return points[i][0] * points[j][0]
 
 
