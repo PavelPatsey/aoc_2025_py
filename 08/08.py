@@ -64,7 +64,7 @@ def get_answer_2(points, heap):
     while max_len < len(points):
         _, i, j = heapq.heappop(heap)
         update_circuits(circuits, i, j)
-        max_len = max(map(lambda x: len(x), circuits))
+        max_len = max(map(len, circuits))
     return points[i][0] * points[j][0]
 
 
