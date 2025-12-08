@@ -2,6 +2,8 @@ from collections import defaultdict, deque
 from itertools import product
 from math import prod, sqrt
 
+from utils import timer
+
 
 def get_data(input_file):
     with open(input_file, "r") as file:
@@ -9,6 +11,7 @@ def get_data(input_file):
     return [[int(x) for x in line.split(",")] for line in data]
 
 
+@timer
 def calculate_distances(points):
     l = len(points)
     distances = [[0 for _ in range(l)] for _ in range(l)]
@@ -21,6 +24,7 @@ def calculate_distances(points):
     return distances
 
 
+@timer
 def get_sorted_ds_points(points, distances):
     l = len(points)
     ds_points = set()
@@ -58,6 +62,7 @@ def make_groups(graph):
     return groups
 
 
+@timer
 def get_answer(n, points):
     distances = calculate_distances(points)
     sorted_ds_points = get_sorted_ds_points(points, distances)
@@ -67,6 +72,7 @@ def get_answer(n, points):
     return prod(lens[:3])
 
 
+@timer
 def get_answer_2(points):
     distances = calculate_distances(points)
     sorted_ds_points = get_sorted_ds_points(points, distances)
