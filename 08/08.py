@@ -1,6 +1,8 @@
+import heapq
 from collections import defaultdict, deque
+from copy import copy
 from itertools import combinations
-from math import prod, sqrt
+from math import prod
 
 from utils import timer
 
@@ -12,39 +14,25 @@ def get_data(input_file):
 
 
 @timer
-def calculate_distances(points):
-    l = len(points)
-    distances = [[0 for _ in range(l)] for _ in range(l)]
-    for i, j in combinations(range(l), 2):
-        x1, y1, z1 = points[i]
-        x2, y2, z2 = points[j]
-        d = sqrt((x2 - x1) ** 2 + (y2 - y1) ** 2 + (z2 - z1) ** 2)
-        distances[i][j] = d
-        distances[j][i] = d
-    return distances
-
-
-@timer
-def get_sorted_ds_points(points, distances):
-    l = len(points)
-    ds_points = set()
-    for i, j in combinations(range(l), 2):
-        if i != j:
-            point = frozenset({i, j})
-            d = distances[i][j]
-            ds_points.add((d, point))
-    return sorted(ds_points)
-
-
-@timer
 def make_ds_points_heap(points):
-    pass
+    l = len(points)
+    heap = []
+    visited = set()
+    for i, j in combinations(range(l), 2):
+        point = frozenset({i, j})
+        if i != j and point not in visited:
+            x1, y1, z1 = points[i]
+            x2, y2, z2 = points[j]
+            d = (x2 - x1) ** 2 + (y2 - y1) ** 2 + (z2 - z1) ** 2
+            heapq.heappush(heap, (d, point))
+            visited.add(point)
+    return heap
 
 
-def make_graph(n, sorted_ds_points):
+def make_graph(n, ds_points_heap):
     graph = defaultdict(set)
     for k in range(n):
-        _d, indxs = sorted_ds_points[k]
+        _d, indxs = heapq.heappop(ds_points_heap)
         i, j = indxs
         graph[i].add(j)
         graph[j].add(i)
@@ -68,20 +56,22 @@ def make_groups(graph):
 
 
 @timer
-def get_answer(n, sorted_ds_points):
-    graph = make_graph(n, sorted_ds_points)
+def get_answer(n, heap):
+    heap = copy(heap)
+    graph = make_graph(n, heap)
     groups = make_groups(graph)
     lens = sorted(map(lambda x: len(x), groups), reverse=True)
     return prod(lens[:3])
 
 
 @timer
-def get_answer_2(points, sorted_ds_points):
+def get_answer_2(points, heap):
+    heap = copy(heap)
     max_len = -1
     n = 0
     circuits = []
     while max_len < len(points):
-        _d, indxs = sorted_ds_points[n]
+        _d, indxs = heapq.heappop(heap)
         i, j = indxs
 
         circ_with_i = None
@@ -114,10 +104,9 @@ def main():
     file = "input.txt"
     n = 10 if file == "test_input.txt" else 1000
     points = get_data(file)
-    distances = calculate_distances(points)
-    sorted_ds_points = get_sorted_ds_points(points, distances)
-    print(get_answer(n, sorted_ds_points))
-    print(get_answer_2(points, sorted_ds_points))
+    heap = make_ds_points_heap(points)
+    print(get_answer(n, heap))
+    print(get_answer_2(points, heap))
 
 
 if __name__ == "__main__":
