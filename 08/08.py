@@ -52,7 +52,7 @@ def get_answer(n, heap):
     for _ in range(n):
         _, i, j = heapq.heappop(heap)
         update_circuits(circuits, i, j)
-    sorted_lens = sorted(map(lambda x: len(x), circuits), reverse=True)
+    sorted_lens = sorted(map(len, circuits), reverse=True)
     return prod(sorted_lens[:3])
 
 
