@@ -29,9 +29,7 @@ def get_answer(n, points, distances):
             point = frozenset({i, j})
             d = distances[i][j]
             ds_points.add((d, point))
-    print(ds_points)
     sorted_ds_points = sorted(ds_points)
-    print(sorted_ds_points)
 
     graph = defaultdict(set)
     for k in range(n):
@@ -39,7 +37,6 @@ def get_answer(n, points, distances):
         i, j = indxs
         graph[i].add(j)
         graph[j].add(i)
-    print(graph)
 
     groups = set()
     for i in graph:
@@ -53,10 +50,7 @@ def get_answer(n, points, distances):
                     visited.add(n)
                     queue.append(n)
         groups.add(frozenset(visited))
-    print(f"{groups=}")
     lens = sorted(map(lambda x: len(x), groups), reverse=True)
-    print(f"{lens=}")
-    print(f"{lens[:3]=}")
     return prod(lens[:3])
 
 
