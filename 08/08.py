@@ -1,7 +1,7 @@
 def get_data(input_file):
     with open(input_file, "r") as file:
         data = file.read().splitlines()
-    return data
+    return [[int(x) for x in line.split(",")] for line in data]
 
 
 def get_answer(data):
