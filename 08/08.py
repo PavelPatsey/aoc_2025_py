@@ -21,7 +21,7 @@ def calculate_distances(points):
     return distances
 
 
-def get_answer(n, points, distances):
+def get_sorted_ds_points(points, distances):
     l = len(points)
     ds_points = set()
     for i, j in product(range(l), range(l)):
@@ -29,14 +29,23 @@ def get_answer(n, points, distances):
             point = frozenset({i, j})
             d = distances[i][j]
             ds_points.add((d, point))
-    sorted_ds_points = sorted(ds_points)
+    return sorted(ds_points)
 
+
+def make_graph(n, sorted_ds_points):
     graph = defaultdict(set)
     for k in range(n):
         _d, indxs = sorted_ds_points[k]
         i, j = indxs
         graph[i].add(j)
         graph[j].add(i)
+    return graph
+
+
+def get_answer(n, points):
+    distances = calculate_distances(points)
+    sorted_ds_points = get_sorted_ds_points(points, distances)
+    graph = make_graph(n, sorted_ds_points)
 
     groups = set()
     for i in graph:
@@ -58,8 +67,7 @@ def main():
     file = "input.txt"
     n = 10 if file == "test_input.txt" else 1000
     points = get_data(file)
-    distances = calculate_distances(points)
-    print(get_answer(n, points, distances))
+    print(get_answer(n, points))
 
 
 if __name__ == "__main__":
