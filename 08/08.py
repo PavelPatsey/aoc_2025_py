@@ -16,15 +16,11 @@ def get_data(input_file):
 def make_ds_points_heap(points):
     l = len(points)
     heap = []
-    visited = set()
     for i, j in combinations(range(l), 2):
-        point = frozenset({i, j})
-        if i != j and point not in visited:
-            x1, y1, z1 = points[i]
-            x2, y2, z2 = points[j]
-            d = (x2 - x1) ** 2 + (y2 - y1) ** 2 + (z2 - z1) ** 2
-            heapq.heappush(heap, (d, i, j))
-            visited.add(point)
+        x1, y1, z1 = points[i]
+        x2, y2, z2 = points[j]
+        d = (x2 - x1) ** 2 + (y2 - y1) ** 2 + (z2 - z1) ** 2
+        heapq.heappush(heap, (d, i, j))
     return heap
 
 
@@ -57,8 +53,8 @@ def get_answer(n, heap):
     for _ in range(n):
         _, i, j = heapq.heappop(heap)
         union(circuits, i, j)
-    lens = sorted(map(lambda x: len(x), circuits), reverse=True)
-    return prod(lens[:3])
+    sorted_lens = sorted(map(lambda x: len(x), circuits), reverse=True)
+    return prod(sorted_lens[:3])
 
 
 @timer
