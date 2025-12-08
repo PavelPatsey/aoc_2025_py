@@ -42,11 +42,7 @@ def make_graph(n, sorted_ds_points):
     return graph
 
 
-def get_answer(n, points):
-    distances = calculate_distances(points)
-    sorted_ds_points = get_sorted_ds_points(points, distances)
-    graph = make_graph(n, sorted_ds_points)
-
+def make_groups(graph):
     groups = set()
     for i in graph:
         visited = {i}
@@ -59,8 +55,21 @@ def get_answer(n, points):
                     visited.add(n)
                     queue.append(n)
         groups.add(frozenset(visited))
+    return groups
+
+
+def get_answer(n, points):
+    distances = calculate_distances(points)
+    sorted_ds_points = get_sorted_ds_points(points, distances)
+    graph = make_graph(n, sorted_ds_points)
+    groups = make_groups(graph)
     lens = sorted(map(lambda x: len(x), groups), reverse=True)
     return prod(lens[:3])
+
+
+def get_answer_2(points):
+    distances = calculate_distances(points)
+    sorted_ds_points = get_sorted_ds_points(points, distances)
 
 
 def main():
@@ -68,6 +77,7 @@ def main():
     n = 10 if file == "test_input.txt" else 1000
     points = get_data(file)
     print(get_answer(n, points))
+    # print(get_answer_2(points))
 
 
 if __name__ == "__main__":
