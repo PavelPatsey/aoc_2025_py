@@ -14,9 +14,8 @@ def get_data(input_file):
 
 @timer
 def make_ds_points_heap(points):
-    l = len(points)
     heap = []
-    for i, j in combinations(range(l), 2):
+    for i, j in combinations(range(len(points)), 2):
         x1, y1, z1 = points[i]
         x2, y2, z2 = points[j]
         d = (x2 - x1) ** 2 + (y2 - y1) ** 2 + (z2 - z1) ** 2
