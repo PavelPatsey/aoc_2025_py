@@ -11,6 +11,17 @@ def get_data(input_file):
     return [tuple([int(x) for x in line.split(",")]) for line in data]
 
 
+def drow_loop(points):
+    extended_points = points + [points[0]]
+    xs = [p[0] for p in extended_points]
+    ys = [p[1] for p in extended_points]
+
+    plt.plot(xs, ys, "bo-")
+    plt.axis("equal")
+    plt.grid()
+    plt.show()
+
+
 def calc_area(p1, p2) -> int:
     x1, y1 = p1
     x2, y2 = p2
@@ -98,30 +109,16 @@ def get_answer_2(points):
 
     res = -1
     print(f"len={len(list(combinations(points, 2)))}")
-    i = 0
-    for p1, p2 in combinations(points, 2):
+    for p1, p2 in tqdm(combinations(points, 2)):
         if is_valid_rectangle(p1, p2, edges):
             res = max(res, calc_area(p1, p2))
-        i += 1
-        print(f"{i=}")
     return res
-
-
-def drow_loop(points):
-    extended_points = points + [points[0]]
-    xs = [p[0] for p in extended_points]
-    ys = [p[1] for p in extended_points]
-
-    plt.plot(xs, ys, "bo-")
-    plt.axis("equal")
-    plt.grid()
-    plt.show()
 
 
 def main():
     file = "test_input.txt"
     points = get_data(file)
-    drow_loop(points)
+    # drow_loop(points)
     print(get_answer_2(points))
 
 
