@@ -1,4 +1,5 @@
 from itertools import combinations
+from utils import timer
 
 
 def get_data(input_file):
@@ -62,25 +63,6 @@ def is_intersect_with_edges(edge, edges) -> bool:
     return False
 
 
-def horizontal_ray_intersects_edge(point, edge):
-    if is_horizontal(edge):
-        return False
-    x, y = point
-    p1, p2 = edge
-    x1, y1 = p1
-    x2, y2 = p2
-    return min(y1, y2) < y < max(y1, y2) and x1 > x
-
-
-def point_in_area(point, edges):
-    counter = 0
-    for edge in edges:
-        if horizontal_ray_intersects_edge(point, edge):
-            counter += 1
-    print(f"{counter=}")
-    return counter % 2 == 1
-
-
 def is_valid_rectangle(p1, p2, edges) -> bool:
     x1, y1 = p1
     x2, y2 = p2
@@ -101,11 +83,10 @@ def is_valid_rectangle(p1, p2, edges) -> bool:
         if is_intersect_with_edges(re, edges):
             return False
 
-    inner_point = (x2 + x1) / 2, (y2 + y1) / 2
-    res = point_in_area(inner_point, edges)
-    return res
+    return True
 
 
+@timer
 def get_answer_2(points):
     edges = []
     extended_points = points + [points[0]]
@@ -113,9 +94,13 @@ def get_answer_2(points):
         edges.append((p1, p2))
 
     res = -1
+    print(f"len={len(list(combinations(points, 2)))}")
+    i = 0
     for p1, p2 in combinations(points, 2):
         if is_valid_rectangle(p1, p2, edges):
             res = max(res, calc_area(p1, p2))
+        i += 1
+        print(f"{i=}")
     return res
 
 
@@ -133,4 +118,4 @@ def test():
 
 if __name__ == "__main__":
     test()
-    # main()
+    main()
