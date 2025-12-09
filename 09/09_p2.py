@@ -1,4 +1,7 @@
 from itertools import combinations
+
+import matplotlib.pyplot as plt
+from tqdm import tqdm
 from utils import timer
 
 
@@ -104,9 +107,21 @@ def get_answer_2(points):
     return res
 
 
+def drow_loop(points):
+    extended_points = points + [points[0]]
+    xs = [p[0] for p in extended_points]
+    ys = [p[1] for p in extended_points]
+
+    plt.plot(xs, ys, "bo-")
+    plt.axis("equal")
+    plt.grid()
+    plt.show()
+
+
 def main():
     file = "test_input.txt"
     points = get_data(file)
+    drow_loop(points)
     print(get_answer_2(points))
 
 
