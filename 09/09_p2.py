@@ -64,6 +64,26 @@ def fill_loop(grid):
             grid[r][nc] = "X"
 
 
+def is_valid_rectangle(p1, p2, grid) -> bool:
+    c1, r1 = p1
+    c2, r2 = p2
+
+    r1, r2 = sorted([r1, r2])
+    c1, c2 = sorted([c1, c2])
+
+    for r in range(r1, r2 + 1):
+        for c in range(c1, c2 + 1):
+            if grid[r][c] == ".":
+                return False
+    return True
+
+
+def calc_area(p1, p2) -> int:
+    x1, y1 = p1
+    x2, y2 = p2
+    return (abs(x2 - x1) + 1) * (abs(y2 - y1) + 1)
+
+
 def get_answer_2(points):
     print(points)
     grid = make_grid(points)
@@ -71,6 +91,12 @@ def get_answer_2(points):
     make_loop(points, grid)
     fill_loop(grid)
     show_grid(grid)
+
+    res = -1
+    for p1, p2 in combinations(points, 2):
+        if is_valid_rectangle(p1, p2, grid):
+            res = max(res, calc_area(p1, p2))
+    return res
 
 
 def main():
