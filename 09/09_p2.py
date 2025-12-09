@@ -1,6 +1,6 @@
 from itertools import combinations
 
-import matplotlib.pyplot as plt
+from matplotlib import pyplot
 from tqdm import tqdm
 from utils import timer
 
@@ -16,30 +16,16 @@ def drow_loop(points):
     xs = [p[0] for p in extended_points]
     ys = [p[1] for p in extended_points]
 
-    plt.plot(xs, ys, "bo-")
-    plt.axis("equal")
-    plt.grid()
-    plt.show()
+    pyplot.plot(xs, ys, "bo-")
+    pyplot.axis("equal")
+    pyplot.grid()
+    pyplot.show()
 
 
 def calc_area(p1, p2) -> int:
     x1, y1 = p1
     x2, y2 = p2
     return (abs(x2 - x1) + 1) * (abs(y2 - y1) + 1)
-
-
-def is_horizontal(edge) -> bool:
-    p1, p2 = edge
-    x1, y1 = p1
-    x2, y2 = p2
-    return y1 == y2
-
-
-def is_vertical(edge) -> bool:
-    p1, p2 = edge
-    x1, y1 = p1
-    x2, y2 = p2
-    return x1 == x2
 
 
 def is_intersect(edge, diagonal) -> bool:
@@ -86,7 +72,7 @@ def get_answer_2(points):
 def main():
     file = "input.txt"
     points = get_data(file)
-    # drow_loop(points)
+    drow_loop(points)
     print(get_answer_2(points))
 
 
