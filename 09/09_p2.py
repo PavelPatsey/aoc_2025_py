@@ -11,12 +11,18 @@ def get_data(input_file):
     return [tuple([int(x) for x in line.split(",")]) for line in data]
 
 
-def drow_loop(points):
+def drow_answer(points, rectangle):
     extended_points = points + [points[0]]
     xs = [p[0] for p in extended_points]
     ys = [p[1] for p in extended_points]
-
     pyplot.plot(xs, ys, "bo-")
+
+    x1, y1 = rectangle[0]
+    x2, y2 = rectangle[1]
+    rect_x = [x1, x2, x2, x1, x1]
+    rect_y = [y1, y1, y2, y2, y1]
+    pyplot.fill(rect_x, rect_y, alpha=0.3, color="red")
+
     pyplot.axis("equal")
     pyplot.grid()
     pyplot.show()
@@ -61,19 +67,22 @@ def get_answer_2(points):
     for p1, p2 in zip(extended_points, extended_points[1:]):
         edges.append((p1, p2))
 
-    res = -1
-    print(f"len={len(list(combinations(points, 2)))}")
+    max_area, max_rectangle = -1, ()
     for p1, p2 in tqdm(combinations(points, 2)):
         if is_valid_rectangle(p1, p2, edges):
-            res = max(res, calc_area(p1, p2))
-    return res
+            area = calc_area(p1, p2)
+            if area > max_area:
+                max_area = area
+                max_rectangle = p1, p2
+    return max_area, max_rectangle
 
 
 def main():
     file = "input.txt"
     points = get_data(file)
-    drow_loop(points)
-    print(get_answer_2(points))
+    max_area, max_rectangle = get_answer_2(points)
+    print(max_area)
+    drow_answer(points, max_rectangle)
 
 
 def test():
