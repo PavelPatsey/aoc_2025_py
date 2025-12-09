@@ -42,61 +42,29 @@ def is_vertical(edge) -> bool:
     return x1 == x2
 
 
-def is_intersects(edge1: tuple, edge2: tuple) -> bool:
-    set1 = set(edge1)
-    set2 = set(edge2)
-    if set1.intersection(set2):
-        return False
-    if is_horizontal(edge1) == is_horizontal(edge2):
-        return False
-
-    if is_horizontal(edge1):
-        assert is_vertical(edge2)
-        h = edge1
-        v = edge2
-    else:
-        assert is_vertical(edge1)
-        h = edge2
-        v = edge1
-
-    ph1, ph2 = h
-    xh1, yh = ph1
-    xh2, _ = ph2
-
-    pv1, pv2 = v
-    xv, yv1 = pv1
-    _, yv2 = pv2
-
-    return min(xh1, xh2) <= xv <= max(xh1, xh2) and min(yv1, yv2) <= yh <= max(yv1, yv2)
-
-
-def is_intersect_with_edges(edge, edges) -> bool:
-    for e in edges:
-        if is_intersects(e, edge):
-            return True
-    return False
+def is_intersect(edge, diagonal) -> bool:
+    d1, d2 = diagonal
+    xd1, yd1 = d1
+    xd2, yd2 = d2
+    p1, p2 = edge
+    x1, y1 = p1
+    x2, y2 = p2
+    x1, x2 = sorted([x1, x2])
+    y1, y2 = sorted([y1, y2])
+    return xd1 < x2 and xd2 > x1 and yd1 < y2 and yd2 > y1
 
 
 def is_valid_rectangle(p1, p2, edges) -> bool:
     x1, y1 = p1
     x2, y2 = p2
-
-    p1 = x1, y1
-    p2 = x2, y1
-    p3 = x2, y2
-    p4 = x1, y2
-
-    rect_edges = {
-        (p1, p2),
-        (p2, p3),
-        (p3, p4),
-        (p4, p1),
-    }
-
-    for re in rect_edges:
-        if is_intersect_with_edges(re, edges):
+    if y1 == y2 or x1 == x2:
+        return False
+    d1 = min(x1, x2), min(y1, y2)
+    d2 = max(x1, x2), max(y1, y2)
+    diagonal = d1, d2
+    for edge in edges:
+        if is_intersect(edge, diagonal):
             return False
-
     return True
 
 
@@ -116,16 +84,19 @@ def get_answer_2(points):
 
 
 def main():
-    file = "test_input.txt"
+    file = "input.txt"
     points = get_data(file)
     # drow_loop(points)
     print(get_answer_2(points))
 
 
 def test():
-    edge1 = ((7, 1), (7, 11))
-    edge2 = ((9, 5), (2, 5))
-    assert is_intersects(edge1, edge2)
+    diagonal = ((0, 0), (5, 5))
+    edge = ((-2, -2), (-1, -2))
+    assert is_intersect(edge, diagonal) == False
+
+    edge = ((2, 2), (-2, 2))
+    assert is_intersect(edge, diagonal) == True
 
 
 if __name__ == "__main__":
