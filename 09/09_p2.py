@@ -17,14 +17,14 @@ def is_horizontal(edge) -> bool:
     p1, p2 = edge
     x1, y1 = p1
     x2, y2 = p2
-    return x1 == x2
+    return y1 == y2
 
 
 def is_vertical(edge) -> bool:
     p1, p2 = edge
     x1, y1 = p1
     x2, y2 = p2
-    return y1 == y2
+    return x1 == x2
 
 
 def is_intersects(edge1: tuple, edge2: tuple) -> bool:
@@ -43,15 +43,16 @@ def is_intersects(edge1: tuple, edge2: tuple) -> bool:
         assert is_vertical(edge1)
         h = edge2
         v = edge1
+
     ph1, ph2 = h
-    xh1, yh1 = sorted(ph1)
-    xh2, yh2 = sorted(ph2)
+    xh1, yh = ph1
+    xh2, _ = ph2
 
     pv1, pv2 = v
-    xv1, yv1 = sorted(pv1)
-    xv2, yv2 = sorted(pv2)
+    xv, yv1 = pv1
+    _, yv2 = pv2
 
-    return xh1 < xv1 < xh2 and yv1 < xh1 < yv2
+    return min(xh1, xh2) <= xv <= max(xh1, xh2) and min(yv1, yv2) <= yh <= max(yv1, yv2)
 
 
 def is_intersect_with_edges(edge, edges) -> bool:
@@ -100,16 +101,16 @@ def is_valid_rectangle(p1, p2, edges) -> bool:
         if is_intersect_with_edges(re, edges):
             return False
 
-    inner_point = abs(x2 - x1) / 2, abs(y2 - y1) / 2
+    inner_point = (x2 + x1) / 2, (y2 + y1) / 2
     res = point_in_area(inner_point, edges)
     return res
 
 
 def get_answer_2(points):
-    edges = set()
+    edges = []
     extended_points = points + [points[0]]
     for p1, p2 in zip(extended_points, extended_points[1:]):
-        edges.add((p1, p2))
+        edges.append((p1, p2))
 
     res = -1
     for p1, p2 in combinations(points, 2):
@@ -124,5 +125,12 @@ def main():
     print(get_answer_2(points))
 
 
+def test():
+    edge1 = ((7, 1), (7, 11))
+    edge2 = ((9, 5), (2, 5))
+    assert is_intersects(edge1, edge2)
+
+
 if __name__ == "__main__":
-    main()
+    test()
+    # main()
