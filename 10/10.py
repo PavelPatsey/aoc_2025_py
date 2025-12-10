@@ -1,6 +1,7 @@
 from collections import deque
 
 from tqdm import tqdm
+
 from utils import timer
 
 
@@ -40,22 +41,17 @@ def find_fewest_bfs(lights, buttons):
     start = tuple(0 for _ in range(len(lights)))
     visited = set()
     visited.add(start)
-    queue = deque([start])
+    queue = deque([(0, start)])
 
-    i = 0
-    while True:
-        new_queue = deque([])
-        while queue:
-            l = queue.popleft()
-            if l == lights:
-                return i
-            for b in buttons:
-                new_l = press_button(l, b)
-                if new_l not in visited:
-                    visited.add(new_l)
-                    new_queue.append(new_l)
-        queue = new_queue
-        i += 1
+    while queue:
+        i, l = queue.popleft()
+        if l == lights:
+            return i
+        for b in buttons:
+            new_l = press_button(l, b)
+            if new_l not in visited:
+                visited.add(new_l)
+                queue.append((i + 1, new_l))
 
 
 @timer
