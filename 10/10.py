@@ -1,18 +1,33 @@
 def get_data(input_file):
     with open(input_file, "r") as file:
         data = file.read().splitlines()
-    return data
+    lights = []
+    buttons = []
+    joltages = []
+    for line in data:
+        i = line.find("[")
+        j = line.find("]")
+        lights.append(line[i + 1 : j])
+
+        a = line.find("{")
+        b = line.find("}")
+        joltages.append([int(x) for x in line[a + 1 : b].split(",")])
+
+        buttons.append([eval(x) for x in line[j + 1 : a].split()])
+    return lights, buttons, joltages
 
 
-def get_answer(data):
+def get_answer(lights, buttons):
     return
 
 
 def main():
     file = "test_input.txt"
-    data = get_data(file)
-    print(data)
-    print(get_answer(data))
+    lights, buttons, joltages = get_data(file)
+    print(lights)
+    print(buttons)
+    print(joltages)
+    print(get_answer(lights, buttons))
 
 
 if __name__ == "__main__":
