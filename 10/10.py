@@ -17,8 +17,16 @@ def get_data(input_file):
     return lights, buttons, joltages
 
 
+def find_fewest_bfs(lights, buttons):
+    pass
+
+
 def get_answer(lights, buttons):
-    return
+    res = 0
+    for l, b in zip(lights, buttons):
+        c = find_fewest_bfs(l, b)
+        res += c
+    return res
 
 
 def main():
