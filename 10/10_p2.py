@@ -1,3 +1,4 @@
+import heapq
 from collections import deque
 
 from tqdm import tqdm
@@ -43,26 +44,25 @@ def is_valid(j, joltages):
 
 
 def find_fewest_bfs(joltages, buttons):
+    buttons = sorted(buttons, key=len, reverse=True)
     joltages = tuple(joltages)
     start = tuple(0 for _ in range(len(joltages)))
     visited = set()
     visited.add(start)
-    queue = deque([start])
+    i, j = 0, start
+    t = i, j
+    queue = deque([t])
 
-    i = 0
-    while True:
-        new_queue = deque([])
-        while queue:
-            j = queue.popleft()
-            if j == joltages:
-                return i
-            for b in buttons:
-                new_l = press_button(j, b)
-                if new_l not in visited and is_valid(j, joltages):
-                    visited.add(new_l)
-                    new_queue.append(new_l)
-        queue = new_queue
-        i += 1
+    while queue:
+        i, j = queue.popleft()
+        if j == joltages:
+            return i
+        for b in buttons:
+            new_l = press_button(j, b)
+            if new_l not in visited and is_valid(j, joltages):
+                visited.add(new_l)
+                t = i + 1, new_l
+                queue.append(t)
 
 
 @timer
