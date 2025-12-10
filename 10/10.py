@@ -28,15 +28,18 @@ def get_data(input_file):
     return lights, buttons, joltages
 
 
-def press_button(lights: list, buttons: tuple):
+def press_button(lights: tuple, buttons: tuple) -> tuple:
     new_lights = [x for x in lights]
     for b in buttons:
         new_lights[b] = (new_lights[b] + 1) % 2
-    return new_lights
+    return tuple(new_lights)
 
 
 def find_fewest_bfs(lights, buttons):
-    start = [0 for _ in range(len(lights))]
+    lights = tuple(lights)
+    start = tuple(0 for _ in range(len(lights)))
+    visited = set()
+    visited.add(start)
     queue = deque([start])
 
     i = 0
@@ -48,7 +51,9 @@ def find_fewest_bfs(lights, buttons):
                 return i
             for b in buttons:
                 new_l = press_button(l, b)
-                new_queue.append(new_l)
+                if new_l not in visited:
+                    visited.add(new_l)
+                    new_queue.append(new_l)
         queue = new_queue
         i += 1
 
@@ -57,18 +62,13 @@ def find_fewest_bfs(lights, buttons):
 def get_answer(lights, buttons):
     res = 0
     for l, b in tqdm(zip(lights, buttons)):
-        c = find_fewest_bfs(l, b)
-        print(f"{c=}")
-        res += c
+        res += find_fewest_bfs(l, b)
     return res
 
 
 def main():
-    file = "test_input.txt"
+    file = "input.txt"
     lights, buttons, joltages = get_data(file)
-    # print(lights)
-    # print(buttons)
-    # print(joltages)
     print(get_answer(lights, buttons))
 
 
