@@ -7,7 +7,7 @@ def get_data(input_file):
     for line in data:
         i = line.find("[")
         j = line.find("]")
-        lights.append(line[i + 1 : j])
+        lights.append([0 if x == "." else 1 for x in line[i + 1 : j]])
 
         a = line.find("{")
         b = line.find("}")
