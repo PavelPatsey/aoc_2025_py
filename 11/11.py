@@ -1,13 +1,10 @@
-from collections import defaultdict
-
-
 def get_data(input_file):
     with open(input_file, "r") as file:
         data = file.read().splitlines()
-    graph = defaultdict(list)
+    graph = {}
     for line in data:
         key, values = line.split(":")
-        graph[key] = values.strip().split()
+        graph[key] = tuple(values.strip().split())
     return graph
 
 
