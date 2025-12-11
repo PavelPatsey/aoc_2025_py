@@ -49,3 +49,14 @@ def in_grid(r, c, grid):
     rows = len(grid)
     cols = len(grid[0])
     return 0 <= r < rows and 0 <= c < cols
+
+
+# Транспонирование матрицы
+matrix = [
+    [1, 2, 3],
+    [4, 5, 6],
+    [7, 8, 9],
+]
+
+transposed = list(zip(*matrix))
+print(transposed)  # [(1, 4, 7), (2, 5, 8), (3, 6, 9)]
