@@ -1,4 +1,4 @@
-from collections import defaultdict, deque
+from collections import defaultdict
 
 
 def get_data(input_file):
@@ -12,48 +12,37 @@ def get_data(input_file):
     return graph
 
 
-def dfs(graph):
-    res = 0
+def get_answer_2(graph):
+    memo = {}
 
-    def _dfs(node, visited):
+    def dfs(node, vis_state):
+        key = (node, vis_state)
+        if key in memo:
+            return memo[key]
+
+        dac_visited, fft_visited = vis_state
+        paths = 0
+
         if node == "out":
-            if "dac" in visited and "fft" in visited:
-                nonlocal res
-                res += 1
-            return
-        for neighbour in graph[node]:
-            if neighbour not in visited:
-                _dfs(neighbour, visited | {neighbour})
+            if dac_visited and fft_visited:
+                paths = 1
+        else:
+            for v in graph.get(node, []):
+                new_dac = dac_visited or (v == "dac")
+                new_fft = fft_visited or (v == "fft")
+                new_state = (new_dac, new_fft)
+                paths += dfs(v, new_state)
 
-    _dfs("svr", frozenset({"svr"}))
-    return res
+        memo[key] = paths
+        return paths
 
-
-def bfs(graph):
-    start = "svr"
-    end = "out"
-    all_paths = []
-    queue = deque()
-    queue.append((start, [start]))
-
-    while queue:
-        node, visited = queue.popleft()
-        if node == end:
-            if "dac" in visited and "fft" in visited:
-                all_paths.append(visited)
-            continue
-        for neighbor in graph.get(node, []):
-            if neighbor not in visited:
-                queue.append((neighbor, visited + [neighbor]))
-
-    return len(all_paths)
+    return dfs("svr", (False, False))
 
 
 def main():
-    file = "test_input_2.txt"
+    file = "input.txt"
     graph = get_data(file)
-    print(dfs(graph))
-    print(bfs(graph))
+    print(get_answer_2(graph))
 
 
 if __name__ == "__main__":
