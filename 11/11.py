@@ -4,11 +4,10 @@ from collections import defaultdict
 def get_data(input_file):
     with open(input_file, "r") as file:
         data = file.read().splitlines()
-    graph = defaultdict(set)
+    graph = defaultdict(list)
     for line in data:
         key, values = line.split(":")
-        for v in values.strip().split():
-            graph[key].add(v)
+        graph[key] = values.strip().split()
     return graph
 
 
