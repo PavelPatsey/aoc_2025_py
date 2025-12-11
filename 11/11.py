@@ -1,18 +1,37 @@
+from collections import defaultdict
+
+
 def get_data(input_file):
     with open(input_file, "r") as file:
         data = file.read().splitlines()
-    return data
+    graph = defaultdict(set)
+    for line in data:
+        key, values = line.split(":")
+        for v in values.strip().split():
+            graph[key].add(v)
+    return graph
 
 
-def get_answer(data):
-    return
+def get_answer(graph):
+    res = 0
+
+    def dfs(node):
+        if node == "out":
+            nonlocal res
+            res += 1
+            return
+        for neighbour in graph[node]:
+            dfs(neighbour)
+
+    dfs("you")
+    return res
 
 
 def main():
-    file = "test_input.txt"
-    data = get_data(file)
-    print(data)
-    print(get_answer(data))
+    file = "input.txt"
+    graph = get_data(file)
+    print(graph)
+    print(get_answer(graph))
 
 
 if __name__ == "__main__":
